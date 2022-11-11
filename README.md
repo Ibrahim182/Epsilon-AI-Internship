@@ -8,7 +8,7 @@
 
 ### <a href='https://github.com/Ibrahim182/Epsilon-AI-Internship/tree/main/Second%20phase'>In the second phase</a> $:-$
 - I am responsible for doing an entire project with deplotment for two projecst $:-$
-- First project :- 
+    - First project :- 
   # Zomato restaurants :
       - Data contains details about restaurants in Banglore city.
       - Our case is to predict if new restaurant will open in the city will success or not.
