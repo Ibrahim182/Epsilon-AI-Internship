@@ -1,4 +1,3 @@
-##In the second phase $:-$
 - I am responsible for doing an entire project with deplotment for two projecst $:-$
     - First project :- 
   # Zomato restaurants :
