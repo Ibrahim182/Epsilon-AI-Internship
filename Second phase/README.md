@@ -1,5 +1,4 @@
-##In the second phase $:-$
-- I am responsible for doing an entire project with deplotment for two projecst $:-$
+- I am responsible for doing an entire project with deployment for two projecst $:-$
     - First project :- 
   # Zomato restaurants :
       - Data contains details about restaurants in Banglore city.
