@@ -1,29 +1,28 @@
+# libraries
 import streamlit as st
+import pandas as pd
 import joblib
 import json
-# from unrar import rarfile
-
-# model = rarfile.RarFile('helpers/model.rar')
+import base64
 
 # Dummy columns
-with open(r'F:\Fields\Data Sci\Epsilon\ML projects\Epsilon intern\Second phase\first task classification\Deployment\helpers\dummies.json', 'r') as openfile:
+with open('helpers/dummies.json', 'r') as openfile:
     # Reading
     all_categories = json.load(openfile)
+inputs = joblib.load(open('helpers/Inputs.h5', 'rb'))
+model = joblib.load(open('helpers/model.h5', 'rb'))
 
-encoder =joblib.load(open('helpers/location_encoder.h5', "rb"))
-model = joblib.load(open('helpers/model.h5', "rb"))
-scaler = joblib.load(open('helpers/scale.h5', "rb"))
-
+# Navigator
 nav = st.sidebar.radio("Navigation",["Home","Prediction"])
+# Home
 if nav == "Home":
     st.markdown("<h1 style='text-align: center;'>Zomato Resturants</h1>", unsafe_allow_html=True)
     st.markdown("""<h3><center>Zomato is an Indian multinational restaurant aggregator and food delivery company founded by <span style="color:#c42626;">Deepinder Goyal</span> and <span style="color:#c42626;">Pankaj Chaddah</span> in <span style="color:#c42626;">2008</span>.</center></h3>
     <h3><center>Our data contain details about restaurants in <span style="color:#c42626;">Bangalore</span> city like (name, location, online_order, cuisines, ...etc).</center></h3>
     <h3><center>Our case is to see if new restaurant will open in this city will <span style="color:#c42626; font-size:50px">success or not</span>.</center></h3>""", unsafe_allow_html=True)
-
-    
+# Prediction
 if nav == "Prediction":
-    import base64
+    # function for background
     def add_bg_from_local(image_file):
         with open(image_file, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
@@ -44,9 +43,8 @@ if nav == "Prediction":
 
     # Location
     location = st.selectbox("Location", all_categories['location'])
-    encoding_location = encoder.transform([location])
 
-    # function to return list contain 1 and 0 depend on user select
+    # function to return list contain 1 and 0 depend on users select
     def get_multiselect(origin, selected):
         choose_list = [0 for i in range(len(origin))]
         for i in selected:
@@ -55,8 +53,7 @@ if nav == "Prediction":
         return choose_list
 
     # Type
-    type = st.selectbox("Type", all_categories['listed_in(type)'])
-    selected_type = get_multiselect(all_categories['listed_in(type)'], [type])
+    types = st.multiselect("Type", all_categories['listed_in(type)'])
 
     # rest_type
     rest_type = st.multiselect("Rest Type", all_categories['rest_type'])
@@ -92,17 +89,19 @@ if nav == "Prediction":
         color:#ffffff;
         }
     </style>""", unsafe_allow_html=True)
-
+    # buuton
     col1, col2, col3 , col4, col5 = st.columns(5)
+    output = False
     with col3:
         if st.button("Predict"):
-            all_data = [online_order, book_table, encoding_location[0], approx_cost] + selected_rest_type + selected_type + selected_cuisines
-            all_data = scaler.transform([all_data])
-            predict = model.predict(all_data)[0]
-            
+            output = True
+    if output == True:
+        for type in types:
+            all_data = [online_order, book_table, location, approx_cost] + selected_rest_type + get_multiselect(all_categories['listed_in(type)'], [type]) + selected_cuisines
+            prediction = pd.DataFrame(columns=inputs, data=[all_data])
+            predict = model.predict(prediction)[0]
             if predict == 1:
-                st.markdown("<h1 style='text-align:center; font-size:40px;'>Will succeed 💯</h1>", unsafe_allow_html=True)
+                st.markdown(f"<h1 style='text-align:center; font-size:40px; background-color:darkred'>{type} Will succeed 💯</h1>", unsafe_allow_html=True)
                 
             else:
-                st.markdown("<h1 style='text-align:center; font-size:40px;'>Unfortunately, Not your place</h1>", unsafe_allow_html=True)
-
+                st.markdown("<h1 style='text-align:center; font-size:40px; background-color:#333339'>Unfortunately, Not your place</h1>", unsafe_allow_html=True)
