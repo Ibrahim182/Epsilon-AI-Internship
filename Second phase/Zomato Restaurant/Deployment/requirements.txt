@@ -1,4 +1,4 @@
 streamlit
+scikit-learn
+category_encoders
 joblib
-json
-unrar
