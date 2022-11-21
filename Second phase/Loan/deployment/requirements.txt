@@ -1,0 +1,4 @@
+streamlit
+joblib
+json
+category_encoders
