@@ -7,7 +7,7 @@
     - Clustering
 
 ### <a href='https://github.com/Ibrahim182/Epsilon-AI-Internship/tree/main/Second%20phase'>In the second phase</a> $:-$
-- I am responsible for doing an entire project with deplotment for two projecst $:-$
+- I am responsible for doing an entire project with deployment for two projecst $:-$
     # First project :- 
   ## Zomato restaurants :
       - Data contains details about restaurants in Banglore city.
